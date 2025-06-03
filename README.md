@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Projeto N8n
 
 Este é um projeto que utiliza o N8n para automação de workflows.
@@ -29,3 +30,7 @@ Após iniciar, o N8n estará disponível em:
 
 - Na primeira execução, você será solicitado a criar uma conta de administrador
 - Certifique-se de alterar as credenciais padrão após o primeiro acesso 
+=======
+# n8n
+Projetos usando n8n.
+>>>>>>> 8e146520c90a7fccb2a97a8a7beea0889a71e01d
