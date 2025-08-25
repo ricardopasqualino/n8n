@@ -1,0 +1,298 @@
+{
+  "name": "Automação de Cadastro via Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cadastro",
+        "responseMode": "responseNode",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "webhook-cadastro",
+      "name": "Webhook Cadastro",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "cadastro-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validação e formatação dos dados de cadastro\nif (!$input.first().json.nome || !$input.first().json.email) {\n  throw new Error('Nome e email são obrigatórios');\n}\n\n// Validação de email\nconst emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\nif (!emailRegex.test($input.first().json.email)) {\n  throw new Error('Email inválido');\n}\n\n// Formatação e validação dos dados\nconst dadosProcessados = {\n  nome: $input.first().json.nome.trim(),\n  email: $input.first().json.email.toLowerCase(),\n  telefone: $input.first().json.telefone || '',\n  empresa: $input.first().json.empresa || '',\n  cargo: $input.first().json.cargo || '',\n  data_cadastro: new Date().toISOString(),\n  status: 'pendente',\n  id_unico: Math.random().toString(36).substr(2, 9)\n};\n\nreturn [{\n  json: dadosProcessados\n}];"
+      },
+      "id": "validacao-dados",
+      "name": "Validação e Formatação",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list"
+        },
+        "table": {
+          "__rl": true,
+          "value": "cadastros",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome": "={{ $json.nome }}",
+            "email": "={{ $json.email }}",
+            "telefone": "={{ $json.telefone }}",
+            "empresa": "={{ $json.empresa }}",
+            "cargo": "={{ $json.cargo }}",
+            "data_cadastro": "={{ $json.data_cadastro }}",
+            "status": "={{ $json.status }}",
+            "id_unico": "={{ $json.id_unico }}",
+            "created_at": "={{ new Date().toISOString() }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "salvar-banco",
+      "name": "Salvar no Banco",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [680, 300],
+      "credentials": {
+        "postgres": {
+          "id": "postgres-credentials",
+          "name": "PostgreSQL"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "noreply@suacompany.com",
+        "toEmail": "={{ $json.email }}",
+        "subject": "Cadastro Confirmado - {{ $json.nome }}",
+        "text": "Olá {{ $json.nome }},\n\nSeu cadastro foi realizado com sucesso!\n\nDados do cadastro:\n- Nome: {{ $json.nome }}\n- Email: {{ $json.email }}\n- Empresa: {{ $json.empresa }}\n- Cargo: {{ $json.cargo }}\n- Data: {{ $json.data_cadastro }}\n- ID: {{ $json.id_unico }}\n\nAguarde nosso contato em breve.\n\nAtenciosamente,\nEquipe de Cadastro",
+        "options": {}
+      },
+      "id": "enviar-email",
+      "name": "Enviar Email Confirmação",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [900, 300],
+      "credentials": {
+        "smtp": {
+          "id": "smtp-credentials",
+          "name": "SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://seu-crm.com/api/leads",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $env.CRM_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $json.nome }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json.email }}"
+            },
+            {
+              "name": "phone",
+              "value": "={{ $json.telefone }}"
+            },
+            {
+              "name": "company",
+              "value": "={{ $json.empresa }}"
+            },
+            {
+              "name": "position",
+              "value": "={{ $json.cargo }}"
+            },
+            {
+              "name": "source",
+              "value": "webhook_n8n"
+            },
+            {
+              "name": "status",
+              "value": "={{ $json.status }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "integrar-crm",
+      "name": "Integrar com CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": true,\n  \"message\": \"Cadastro realizado com sucesso\",\n  \"data\": {\n    \"id\": \"{{ $json.id_unico }}\",\n    \"nome\": \"{{ $json.nome }}\",\n    \"email\": \"{{ $json.email }}\",\n    \"status\": \"{{ $json.status }}\"\n  },\n  \"timestamp\": \"{{ new Date().toISOString() }}\"\n}",
+        "options": {}
+      },
+      "id": "resposta-webhook",
+      "name": "Resposta do Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "verificar-erro",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "verificar-erro",
+      "name": "Verificar Erro",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 500]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": false,\n  \"error\": \"{{ $json.error }}\",\n  \"message\": \"Erro no processamento do cadastro\",\n  \"timestamp\": \"{{ new Date().toISOString() }}\"\n}",
+        "options": {}
+      },
+      "id": "resposta-erro",
+      "name": "Resposta de Erro",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 500]
+    }
+  ],
+  "connections": {
+    "Webhook Cadastro": {
+      "main": [
+        [
+          {
+            "node": "Validação e Formatação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validação e Formatação": {
+      "main": [
+        [
+          {
+            "node": "Salvar no Banco",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar no Banco": {
+      "main": [
+        [
+          {
+            "node": "Enviar Email Confirmação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Email Confirmação": {
+      "main": [
+        [
+          {
+            "node": "Integrar com CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Integrar com CRM": {
+      "main": [
+        [
+          {
+            "node": "Resposta do Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Erro": {
+      "main": [
+        [
+          {
+            "node": "Resposta de Erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-15T10:30:00.000Z",
+      "updatedAt": "2024-01-15T10:30:00.000Z",
+      "id": "cadastro-tag",
+      "name": "Cadastro"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-15T10:30:00.000Z",
+  "versionId": "1"
+}

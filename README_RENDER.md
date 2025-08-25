@@ -1,4 +1,4 @@
-# 🚀 n8n Webhook Cadastro - Deploy no Render
+# 🚀 Deploy n8n no Render - Webhooks de Cadastro
 
 ## 📋 Visão Geral
 
@@ -17,10 +17,10 @@ Este projeto configura um n8n no Render para receber webhooks de cadastro e exec
 
 ```
 ├── render.yaml                    # Configuração do Render
-├── README_RENDER.md              # Guia de deploy detalhado
+├── DEPLOY_RENDER.md              # Guia de deploy detalhado
 ├── setup_render_db.sql           # Script para configurar banco
 ├── exemplo_workflow_cadastro.json # Workflow pronto
-└── README.md                     # Este arquivo
+└── README_RENDER.md              # Este arquivo
 ```
 
 ## ⚡ Deploy Rápido
@@ -30,6 +30,9 @@ Este projeto configura um n8n no Render para receber webhooks de cadastro e exec
 # Clone ou crie um repositório
 git clone https://github.com/seu-usuario/n8n-webhook-cadastro.git
 cd n8n-webhook-cadastro
+
+# Adicione os arquivos necessários
+# (render.yaml, exemplo_workflow_cadastro.json, etc.)
 ```
 
 ### 2. Deploy no Render
@@ -142,6 +145,11 @@ Database connection failed
 Cannot connect to database
 ```
 
+### Métricas do Render
+- **Uptime**: Serviço sempre ativo
+- **Response Time**: Tempo de resposta
+- **Error Rate**: Taxa de erros
+
 ## 🔒 Segurança
 
 ### Recomendações
@@ -160,6 +168,27 @@ Cannot connect to database
 ### Upgrade Recomendado
 - **n8n**: $7/mês (sempre ativo)
 - **PostgreSQL**: $7/mês (mais espaço)
+
+## 🎯 Casos de Uso
+
+### 1. Cadastro de Clientes
+- Recebe dados do formulário
+- Valida informações
+- Salva no banco
+- Envia email de boas-vindas
+- Integra com CRM
+
+### 2. Cadastro de Funcionários
+- Recebe dados do RH
+- Cria conta de email
+- Adiciona ao sistema de ponto
+- Envia credenciais
+
+### 3. Cadastro de Fornecedores
+- Recebe dados
+- Valida documentos
+- Salva no ERP
+- Envia para aprovação
 
 ## 📚 Recursos
 

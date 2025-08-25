@@ -1,0 +1,103 @@
+# Configuração otimizada para deploy do n8n no Render
+# Inclui configurações para webhooks e automações de cadastro
+
+services:
+  - type: web
+    plan: free
+    runtime: image
+    name: n8n-webhook-cadastro
+    image:
+      url: docker.io/n8nio/n8n:latest
+    
+    # Health check para garantir que o serviço está funcionando
+    healthCheckPath: /
+    
+    # Auto-deploy quando houver push para main
+    autoDeploy: true
+
+    # Configurações de rede e porta
+    port: 5678
+
+    # Variáveis de ambiente essenciais
+    envVars:
+      # Chave de criptografia (gerada automaticamente)
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
+
+      # Configurações de host e protocolo
+      - key: N8N_HOST
+        value: ${RENDER_EXTERNAL_URL}
+      - key: N8N_PROTOCOL
+        value: https
+      - key: N8N_PORT
+        value: 5678
+      
+      # Configurações de webhook
+      - key: N8N_WEBHOOK_URL
+        value: ${RENDER_EXTERNAL_URL}
+      - key: N8N_PATH
+        value: /
+      
+      # Configurações de segurança
+      - key: N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS
+        value: true
+      - key: N8N_JWT_SECRET
+        generateValue: true
+      
+      # Configurações gerais
+      - key: N8N_LOG_LEVEL
+        value: info
+      - key: N8N_LOG_OUTPUT
+        value: console
+      - key: GENERIC_TIMEZONE
+        value: America/Sao_Paulo
+      
+      # Configurações de execução
+      - key: N8N_EXECUTIONS_PROCESS
+        value: main
+      - key: N8N_EXECUTIONS_MODE
+        value: regular
+      
+      # Configurações de email (opcional - configure conforme necessário)
+      - key: N8N_EMAIL_MODE
+        value: smtp
+      - key: N8N_SMTP_HOST
+        value: smtp.gmail.com
+      - key: N8N_SMTP_PORT
+        value: 587
+      - key: N8N_SMTP_USER
+        value: seu_email@gmail.com
+      - key: N8N_SMTP_PASS
+        value: sua_senha_app
+      - key: N8N_SMTP_SENDER
+        value: noreply@suacompany.com
+      
+      # Configurações do banco de dados (conecta automaticamente ao PostgreSQL do Render)
+      - key: DB_TYPE
+        value: postgresdb
+      - key: DB_POSTGRESDB_DATABASE
+        fromDatabase:
+          name: n8n-db
+          property: database
+      - key: DB_POSTGRESDB_HOST
+        fromDatabase:
+          name: n8n-db
+          property: host
+      - key: DB_POSTGRESDB_PASSWORD
+        fromDatabase:
+          name: n8n-db
+          property: password
+      - key: DB_POSTGRESDB_USER
+        fromDatabase:
+          name: n8n-db
+          property: user
+      - key: DB_POSTGRESDB_PORT
+        fromDatabase:
+          name: n8n-db
+          property: port
+
+databases:
+  - name: n8n-db
+    plan: free
+    # O plano gratuito tem limite de 1 GB
+    # Para produção, considere upgrade para plano pago
