@@ -1,0 +1,25 @@
+# Arquivos do Git
+.git
+.gitignore
+
+# Documentação
+README.md
+README_RENDER.md
+*.md
+
+# Scripts SQL (não são necessários para o container)
+*.sql
+
+# Workflows (serão importados manualmente)
+*.json
+
+# Logs
+*.log
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db

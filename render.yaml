@@ -4,10 +4,12 @@
 services:
   - type: web
     plan: free
-    runtime: image
+    runtime: docker
     name: n8n-webhook-cadastro
-    image:
-      url: docker.io/n8nio/n8n:latest
+    
+    # Configurações específicas para Docker
+    buildCommand: ""
+    startCommand: ""
     
     # Health check para garantir que o serviço está funcionando
     healthCheckPath: /
