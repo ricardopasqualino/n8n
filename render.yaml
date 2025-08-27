@@ -17,9 +17,6 @@ services:
     # Auto-deploy quando houver push para main
     autoDeploy: true
 
-    # Configurações de rede e porta
-    port: 5678
-
     # Variáveis de ambiente essenciais
     envVars:
       # Chave de criptografia (gerada automaticamente)
@@ -45,6 +42,16 @@ services:
         value: true
       - key: N8N_JWT_SECRET
         generateValue: true
+      
+      # Configurações de segurança HTTPS
+      - key: N8N_FORCE_HTTPS
+        value: true
+      - key: N8N_SECURE_COOKIE
+        value: true
+      - key: N8N_TRUSTED_PROXY_IPS
+        value: 0.0.0.0/0
+      - key: N8N_PROXY_HEADER
+        value: x-forwarded-for
       
       # Configurações gerais
       - key: N8N_LOG_LEVEL
