@@ -53,12 +53,110 @@ services:
         value: console
       - key: GENERIC_TIMEZONE
         value: America/Sao_Paulo
+      - key: N8N_USER_MANAGEMENT_DISABLED
+        value: false
+      - key: N8N_BASIC_AUTH_ACTIVE
+        value: false
+      - key: N8N_BASIC_AUTH_USER
+        value: admin
+      - key: N8N_BASIC_AUTH_PASSWORD
+        value: admin123
       
       # Configurações de execução
       - key: N8N_EXECUTIONS_PROCESS
         value: main
       - key: N8N_EXECUTIONS_MODE
         value: regular
+      - key: N8N_EXECUTIONS_TIMEOUT
+        value: 3600
+      - key: N8N_EXECUTIONS_TIMEOUT_MAX
+        value: 7200
+      - key: N8N_EXECUTIONS_DATA_SAVE_ON_ERROR
+        value: all
+      - key: N8N_EXECUTIONS_DATA_SAVE_ON_SUCCESS
+        value: all
+      
+      # Configurações de persistência de workflows (IMPORTANTE!)
+      - key: N8N_WORKFLOW_SAVE_DATA_PROCESSING
+        value: all
+      - key: N8N_WORKFLOW_SAVE_DATA_EXECUTION
+        value: all
+      - key: N8N_WORKFLOW_SAVE_DATA_SUCCESS
+        value: all
+      - key: N8N_WORKFLOW_SAVE_DATA_ERROR
+        value: all
+      - key: N8N_WORKFLOW_SAVE_DATA_WARNING
+        value: all
+      - key: N8N_WORKFLOW_SAVE_DATA_MANUAL_EXECUTIONS
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_PROGRESS
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_INPUT
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_OUTPUT
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_MODE
+        value: all
+      - key: N8N_WORKFLOW_SAVE_DATA_CREDENTIALS
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_TAGS
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_META
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_STATIC_DATA
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_PIN_DATA
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_SETTINGS
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_VERSION
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_OWNER
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_SHARED
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_ACTIVE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_NODES
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_CONNECTIONS
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_TRIGGERS
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_WEBHOOKS
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_CREDENTIALS_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_VARIABLES
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_TAGS_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_META_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_STATIC_DATA_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_PIN_DATA_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_SETTINGS_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_VERSION_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_OWNER_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_SHARED_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_ACTIVE_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_NODES_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_CONNECTIONS_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_TRIGGERS_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_WEBHOOKS_OVERRIDE
+        value: true
+      - key: N8N_WORKFLOW_SAVE_DATA_VARIABLES_OVERRIDE
+        value: true
       
       # Configurações de email (opcional - configure conforme necessário)
       - key: N8N_EMAIL_MODE
@@ -72,6 +170,8 @@ services:
       - key: N8N_SMTP_PASS
         value: sua_senha_app
       - key: N8N_SMTP_SENDER
+        value: noreply@suacompany.com
+      - key: N8N_SMTP_REPLY_TO
         value: noreply@suacompany.com
       
       # Configurações do banco de dados (conecta automaticamente ao PostgreSQL do Render)

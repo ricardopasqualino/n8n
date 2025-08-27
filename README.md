@@ -128,6 +128,12 @@ curl -X POST https://seu-servico.onrender.com/webhook/cadastro \
 - Use senha de app do Gmail
 - Verifique o email remetente
 
+### Problema: Workflows se perdem ao fazer logout
+- **Solução**: As variáveis de persistência já estão configuradas no `render.yaml`
+- **Verificar**: Confirme se o banco PostgreSQL está conectado
+- **Testar**: Crie um workflow, salve, faça logout/login e verifique se ainda está lá
+- **Logs**: Procure por "Database connection established" nos logs
+
 ## 📈 Monitoramento
 
 ### Logs Importantes
