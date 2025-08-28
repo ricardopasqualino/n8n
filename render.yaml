@@ -25,7 +25,7 @@ services:
 
             # Configurações de host e protocolo
       - key: N8N_HOST
-        value: ${RENDER_EXTERNAL_URL}
+        value: https://n8n-webhook-cadastros.onrender.com
       - key: N8N_PROTOCOL
         value: https
       - key: N8N_PORT
