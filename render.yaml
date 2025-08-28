@@ -25,11 +25,9 @@ services:
 
             # Configurações de host e protocolo
       - key: N8N_HOST
-        value: https://n8n-webhook-cadastros.onrender.com
+        value: n8n-webhook-cadastros.onrender.com
       - key: N8N_PROTOCOL
         value: https
-      - key: N8N_PORT
-        value: 5678
 
       # Configurações de webhook (sem porta para produção)
       - key: N8N_WEBHOOK_URL
