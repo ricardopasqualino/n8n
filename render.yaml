@@ -178,28 +178,7 @@ services:
         value: true
       - key: N8N_WORKFLOW_SAVE_DATA_VARIABLES_OVERRIDE
         value: true
-      
-      # Configurações de email (opcional - configure conforme necessário)
-      - key: N8N_EMAIL_MODE
-        value: smtp
-      - key: N8N_SMTP_HOST
-        value: smtp.gmail.com
-      - key: N8N_SMTP_PORT
-        value: 587
-      - key: N8N_SMTP_USER
-        value: seu_email@gmail.com
-      - key: N8N_SMTP_PASS
-        value: sua_senha_app
-      - key: N8N_SMTP_SENDER
-        value: noreply@suacompany.com
-      - key: N8N_SMTP_REPLY_TO
-        value: noreply@suacompany.com
-      
-      # Remover footer padrão do n8n
-      - key: N8N_EMAIL_TEMPLATE_FOOTER
-        value: ""
-      - key: N8N_EMAIL_TEMPLATE_HEADER
-        value: ""
+            
       
       # Configurações do banco de dados (conecta automaticamente ao PostgreSQL do Render)
       - key: DB_TYPE
