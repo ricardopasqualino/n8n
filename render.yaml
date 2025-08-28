@@ -195,6 +195,12 @@ services:
       - key: N8N_SMTP_REPLY_TO
         value: noreply@suacompany.com
       
+      # Remover footer padrão do n8n
+      - key: N8N_EMAIL_TEMPLATE_FOOTER
+        value: ""
+      - key: N8N_EMAIL_TEMPLATE_HEADER
+        value: ""
+      
       # Configurações do banco de dados (conecta automaticamente ao PostgreSQL do Render)
       - key: DB_TYPE
         value: postgresdb
