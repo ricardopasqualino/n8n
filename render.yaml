@@ -33,11 +33,11 @@ services:
 
       # Configurações de webhook (sem porta para produção)
       - key: N8N_WEBHOOK_URL
-        value: https://${RENDER_EXTERNAL_URL}
+        value: https://n8n-webhook-cadastro.onrender.com
       
       # Configurações OAuth2 (sem porta para produção)
       - key: N8N_OAUTH2_CALLBACK_URL
-        value: https://${RENDER_EXTERNAL_URL}/rest/oauth2-credential/callback
+        value: https://n8n-webhook-cadastro.onrender.com/rest/oauth2-credential/callback
       - key: N8N_PATH
         value: /
       
