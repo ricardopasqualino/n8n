@@ -23,17 +23,21 @@ services:
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
 
-      # Configurações de host e protocolo
+            # Configurações de host e protocolo
       - key: N8N_HOST
         value: ${RENDER_EXTERNAL_URL}
       - key: N8N_PROTOCOL
         value: https
       - key: N8N_PORT
         value: 5678
-      
-      # Configurações de webhook
+
+      # Configurações de webhook (sem porta para produção)
       - key: N8N_WEBHOOK_URL
-        value: ${RENDER_EXTERNAL_URL}
+        value: https://${RENDER_EXTERNAL_URL}
+      
+      # Configurações OAuth2 (sem porta para produção)
+      - key: N8N_OAUTH2_CALLBACK_URL
+        value: https://${RENDER_EXTERNAL_URL}/rest/oauth2-credential/callback
       - key: N8N_PATH
         value: /
       
@@ -52,6 +56,16 @@ services:
         value: 0.0.0.0/0
       - key: N8N_PROXY_HEADER
         value: x-forwarded-for
+      
+      # Configurações CORS para permitir Postman
+      - key: N8N_CORS_ORIGIN
+        value: "*"
+      - key: N8N_CORS_CREDENTIALS
+        value: true
+      - key: N8N_CORS_METHODS
+        value: "GET,POST,PUT,DELETE,OPTIONS"
+      - key: N8N_CORS_ALLOWED_HEADERS
+        value: "Content-Type,Authorization,X-Requested-With"
       
       # Configurações gerais
       - key: N8N_LOG_LEVEL
